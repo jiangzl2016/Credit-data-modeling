@@ -1,0 +1,32 @@
+
+OLS model summary 
+
+Call:
+lm(formula = Balance ~ ., data = training_set)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.35195 -0.16911 -0.03486  0.12556  0.72907 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)        -0.004442   0.012400  -0.358  0.72044    
+Income             -0.599283   0.020751 -28.880  < 2e-16 ***
+Limit               0.938643   0.188604   4.977 1.11e-06 ***
+Rating              0.416860   0.189866   2.196  0.02892 *  
+Cards               0.046464   0.014767   3.146  0.00183 ** 
+Age                -0.026947   0.012868  -2.094  0.03712 *  
+Education          -0.005068   0.012419  -0.408  0.68351    
+GenderFemale       -0.008289   0.012403  -0.668  0.50449    
+StudentYes          0.278954   0.012190  22.884  < 2e-16 ***
+MarriedYes         -0.021680   0.012744  -1.701  0.08998 .  
+EthnicityAsian      0.015477   0.015135   1.023  0.30736    
+EthnicityCaucasian  0.014961   0.015065   0.993  0.32149    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.2138 on 288 degrees of freedom
+Multiple R-squared:  0.957,	Adjusted R-squared:  0.9554 
+F-statistic: 582.8 on 11 and 288 DF,  p-value: < 2.2e-16
+
+

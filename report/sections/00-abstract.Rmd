@@ -1,0 +1,12 @@
+---
+title: "Linear model selection and regularization"
+author: "Zhongling Jinag, Xinyu Zhang"
+date: "October 28, 2016"
+output: pdf_document
+---
+
+#Abstract
+This report is about reporducing linear regression based on four linear models in order to improve the simple linear model by replcing plain lesat squares fitting with some alternative fitting procedures. All data and sources are from Chapter 6 *Linear model selection and regularization* (pages 203-264), from the book "An Introduction to Statistical Learning" [(by James et al)](http://www-bcf.usc.edu/~gareth/ISL/)
+
+
+

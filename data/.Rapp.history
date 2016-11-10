@@ -1,0 +1,12 @@
+load("/Users/zhonglingjiang/stats_159/stat159-project2/data/training_and_testing.RData")
+x_training
+training_set
+load("/Users/zhonglingjiang/stats_159/stat159-project2/data/training_and_testing.RData")
+ls()
+head(training_set)
+load("/Users/zhonglingjiang/stats_159/stat159-project2/data/training_and_testing.RData")
+head(training_set)
+load("/Users/zhonglingjiang/stats_159/stat159-project2/data/training_and_testing.RData")
+head(training_set)
+load("/Users/zhonglingjiang/stats_159/stat159-project2/data/training_and_testing.RData")
+head(training_set)

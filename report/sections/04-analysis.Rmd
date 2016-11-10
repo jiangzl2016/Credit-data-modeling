@@ -1,0 +1,66 @@
+
+# Analysis
+## Exploratory Data Analysis (EDA)
+In this section, the first step is to understand the data. The `Credit.csv` data we have quantitative variables and qualitative (categorical) variables. We obtain descriptive statistics and summaries of all variables and get statistics information. You can find summary output `eda-output.txt` in `data/` folder, and plots in `images/` folder. 
+
+For the quantitative variables, there are `balance`, `age`, `cards`, `rating`, `education` , `income`, `limit`. We compute:
+
+- Minimum, Maximum, Range
+- Median, First and Third quartiles, and interquartile range (IQR)
+- Mean and Standard Deviation
+- histograms and boxplots
+
+For the qualitative (categorical) variables, there are `gender`, `student`, `status`, and `ethnicity`. We compute 
+
+- a table of frequencies with both the frequency and the relative frequency
+- barcharts of such frequencies 
+
+
+Because we are interested in studying the association between `Balance` and
+the rest of predictors, we also obtain:
+
+- matrix of correlations among all quantitative variables.
+- scatterplot matrix.
+- anova's between `Balance` and all the qualitative variables 
+- conditional boxplots between `Balance` and the qualitative variables, 
+that is, boxplots of `Balance` conditioned to each of `Gender`, `Ethnicity`, 
+`Student`, and `Married`.
+
+## Pre-modeling Data Processing
+There are two major processing steps are needed before we fit any model:
+
+- Convert factors into dummy variables
+- Mean centering and standardization
+
+The first processing step involves transforming each categorical variable (`Gender`, `Student`, `Married`, and `Ethnicity`) into dummy variables (binary indicators).For a given factor, the number of binary indicators will be one less than the number of levels. The main reason to do this is because both ridge and lasso regressions will not work if the input data contains factors.
+
+The second processing step involves mean-centering and standardizing all the variables. This means that each variable will have mean zero, and standard deviation one. One reason to standardize variables is to have comparable scales. In a regression analysis, the value of the computed coefficients will depend on the measurement scale of the associated predictors. A $\beta$ coefficient will be different if the variable is measured in grams or in kilos. To avoid favoring a certain coefficient, it is recommended to mean-center and standardize the variables. 
+
+> For the scaled data, it's saved in `scaled_credit.csv`  in `data/` folder. And it is the actual data that we will use for the model building process.
+
+## Regression Models
+As we mentioned in Data section, The `scaled_credit` data set has 400 observations which has a random sample of size 300 with no replacement in `training` set and the rest of 100 values in `testing` set. For reproducibility purposes, we set a random seed `set.seed(200)`. Then we will use train and test vectors to build 5 models:
+ - Ordinary Least Squares (OLS)
+ - Ridge Regression
+ - Lasso Regression
+ - Principal Components regression (PCR)
+ - Partial Least Squares regression (PLSR)
+The multiple linear regression model via OLS serves as a benchmark to other 4 models. Ridge and Lasso regressions are shrinkage moethods. Functions to fit models are in package `"glmnet"`. Functions to fit with PCR and PLSR are available in the package `"pls"`. 
+
+## Model Building Process
+First, we set seed to 200 and run the corresponding fitting function on the train set using ten-fold cross-validation whih works by resampling data. `cv.glmnet()` performs 10-fold cross-validation by default and computes an intercept term and standardizes the variables by default. Because we already mean-centered and standardized all the variables in `scaled_credit`, we use the arguments `intercept = FALSE`, and `standardize = FALSE`. The grid for the argument `lambda` of: `grid <- 10^seq(10, -2, length = 100)`, with functions `pcr()` and `plsr()` use the argument `validation = "CV"` to perform 10-fold cross-validation.
+ 
+Second, the output from the fitting function give us a list of models. In order to select the best model: in RR and LR, we look for `$lambda.min` from the output of `cv.glmnet()`; in PCR and PLSR, we look for the minimum `$validation$PRESS` from the outputs of `pcr()` and `plsr()`.
+
+Third, after we identify the "best" model, we use the __test set__ to compute the 
+test Mean Square Error (test MSE). We will use these values to
+compare the performance of all the models in next `results` section.
+ 
+Last but not least, we refit the model on the __full data set__ using the 
+parameter chosen by cross-validation. This fit gives the "official" 
+coefficient estimates.
+
+All output we saved and plots we got will be anaylysis in next section -- `Results`
+ 
+
+

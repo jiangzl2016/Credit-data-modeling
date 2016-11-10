@@ -1,0 +1,3 @@
+Data
+
+The data folder contains the Credit.csv dataset. It also containcs necessary key data objects (in .RData file) produced during modeling process and summary data (in .txt file.)

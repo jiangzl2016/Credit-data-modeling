@@ -1,0 +1,10 @@
+The summary table of PCR on fuull data set: 
+Data: 	X dimension: 400 12 
+	Y dimension: 400 1
+Fit method: svdpc
+Number of components considered: 2
+TRAINING: % variance explained
+          1 comps  2 comps
+X       99.918036    99.94
+y_full   0.003681    58.21
+NULL

@@ -1,0 +1,8 @@
+# Data
+The data set is a CSV file avaiable in [http://www-bcf.usc.edu/~gareth/ISL/Credit.csv](http://www-bcf.usc.edu/~gareth/ISL/Credit.csv). It contains `balance` (average credit card debt for a number of individuals) as well as 10 quantitative predictors: `age`, `cards`(number of credit cards), `rating`(credit rating), `education` (year of education), `income`(in thousands of dollars), `limit`(credit limit), `gender`, `student`(student status), `status`(marital status), and `ethnicity`(Caucasian, African American or Asian). 
+
+The `Credit` data set has 400 observations. Based on this data set, we transform it into another data set into `scaled_credit.csv` in `data/` folder (We will explain in Analysis section). In `scaled_credit` data set, there are a random sample of size 300 with no replacement in `train` set and the rest of 100 values in `test` set. For reproducibility purposes, we set a random seed `set.seed(200)`. Then we will use train and test vectors (in scaled data), to build models. 
+
+
+
+

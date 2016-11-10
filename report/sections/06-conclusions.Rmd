@@ -1,0 +1,8 @@
+---
+output: pdf_document
+---
+
+#Conclusion
+
+Combining the coefficients from all five regression models, we realize that variables Income, Rating, Limit and StuedentYes has a greater impact on predicting Balance than other regressors, whose values are close to 0. Each model has its own advantage and shortage. We need to carefully analyze them in different situations.
+For the dataset we work on in this project, we believe lasso model is the best fit according to the Mean Square Error and total numbers of predictors used. The reason is that the lasso model uses the fewest variables but achieves an ideal MSE. 

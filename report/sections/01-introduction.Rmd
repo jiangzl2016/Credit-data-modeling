@@ -1,0 +1,10 @@
+# Introduction
+In this report, in order to yield better prediction accuracy and model interpretability, we want to exploreapproaches for extending the linear model framework. Hence, we use four approaches for automatically performing feature selection or vairable selection--that is, for excluding irrelevant wariables from a multiple regression model: 
+
+- Ridge regression (RR)
+- Lasso regression (LR)
+- Principal Components regression (PCR) 
+- Partial Least Squares regression (PLSR)
+
+
+

@@ -1,0 +1,111 @@
+---
+output: pdf_document
+---
+
+#Results
+
+```{r, echo=FALSE}
+load("../../data/lasso_model.RData")
+load("../../data/OLS.RData")
+load("../../data/all_ridge_mods.RData")
+load("../../data/pcr_fit.RData")
+load("../../data/plsr_model.RData")
+library(xtable)
+library(knitr)
+
+```
+
+
+##OLS
+At last we look at the ordinary least square regression:
+The coefficients of the model that includes all predictors is:
+```{r xtable5, results = 'asis', echo = FALSE, warning=FALSE, comment= FALSE, message=FALSE}
+load("../../data/OLS.RData")
+olscoef <- xtable(OLS_summary$coefficients, caption = "OLS coefficients",digits = c(0,3,3,3,3))
+print(olscoef,comment = FALSE)
+```
+The R-square is `r OLS_summary$r.squared`. The Residual Standard Error is `r OLS_summary$sigma`. We find out that among these 11 coefficients, some of them have relatively high p-value. For exmaple, the corresponding values of categorical variables `eduaction`, `EthnicityAisan` , `EthnicityCaucasian`, `gender`, `Married status` are `r OLS_summary$coefficients["Education",4]`, `r OLS_summary$coefficients["EthnicityAsian",4]`,`r OLS_summary$coefficients["EthnicityCaucasian",4]`, `r OLS_summary$coefficients["GenderFemale",4]`,`r OLS_summary$coefficients['MarriedYes',4]` which are far bigger than 0.05. 
+
+In addition, we also find that the absolute value of the estimated coefficient `Income`, `Limit`, and `Rating` are `r abs(OLS_summary$coefficients['Income',1])`, `r OLS_summary$coefficients["Limit",1]`, `r OLS_summary$coefficients["Rating",1]` which are statistically significant and thus make huge influence in response `balance`.
+
+##Ridge
+We perform ridge regresssion on the centered Credit training data, and obtain the following result:
+
+The coefficient of fitting the full data is following:
+
+```{r xtable1, results = 'asis', echo = FALSE, warning=FALSE, comment= FALSE, message=FALSE}
+ridge_coefficients = as.matrix(ridge_coef)
+colnames(ridge_coefficients) <- "Estimate"
+ridgecoef <- xtable( ridge_coefficients, caption = "Ridge Coefficients", digits = c(0,3))
+print(ridgecoef,comment = FALSE)
+```
+
+Using the outputs of the 10-fold cross-validation with minimum validation error, the $\lambda$ we get is $\lambda$ = `r ridge_best_lambda` and the test mse is `r ridge_test_mse`.Among the 11 variables, the corresponding absoluted estimated value of `Income`, `Limit`, and `Rating` are `r abs(ridge_coef["Income",1])`, `r ridge_coef["Limit",1]`, and `r ridge_coef["Rating",1]`, which are statistically significant and thus have huge influence on the response `Balance`.
+
+
+
+## Lasso
+Then we fit lasso regression on the centered Credit training data.
+The refitting coefficients is the following:
+
+```{r xtable2, results = 'asis', echo = FALSE, warning=FALSE, comment= FALSE, message=FALSE}
+lasso_coefficients = as.matrix(lasso_coef)
+colnames(lasso_coefficients) = "Estimate"
+lassocoef <- xtable(lasso_coefficients, caption = "Lasso Coefficients", digits = c(0,3))
+print(lassocoef,comment = FALSE)
+```
+
+Using the outputs of the 10-fold cross-validation with minimum validation error, the $\lambda$ we get is $\lambda$ = `r lasso_best_lambdabda`, and the lasso test MSE is `r lasso_mse`.
+
+We observe some coefficients could reduce to zero because of the special regularizing term the lasso regression has. For example, `Education`, `Gender`,`Married status`, and `Ethnicity` all reduce to zero. Such reduction makes the interpretation much easier. 
+
+
+##PCR
+Now we use a different method which focus on dimension reduction by unsupervised learning -- the principle component methods to fit on the training data. In this case, we think the optimal number of principle components used is `r pcr_best`, and the resulting test MSE is `r pcr_mse`.
+The coefficients of PCR model refitting on full data set is:
+```{r xtable3, results = 'asis', echo = FALSE, warning=FALSE, comment= FALSE, message=FALSE}
+pcr_coef = data.frame(pcr.coef)
+b = rownames(pcr_coef)[-1]
+pcr_coef = data.frame(pcr_coef[-1,])
+row.names(pcr_coef) <- b
+colnames(pcr_coef) = "Estimate"
+pcrcoef <- xtable(pcr_coef, caption = "PCR Coefficients",digits = c(0,3))
+print(pcrcoef,comment = FALSE)
+```
+
+##PLSR
+We slightly change our method to PLSR which also focus on dimension reduction, but in a supervised way. The optimal number of principle components is `r plsr_best` by comparing validating errors for different Ms, and the thus resulting test MSE is `r plsr_mse`
+The coefficient of refitting PLSR model on full dataset is:
+```{r xtable4, results = 'asis', echo = FALSE, warning=FALSE, comment= FALSE, message=FALSE}
+plsr_coef = data.frame(plsr_coef)
+colnames(plsr_coef) = "Estimate"
+plsrcoef <- xtable(plsr_coef, caption = "PLSR Coefficients", digits = c(0,3))
+print(plsrcoef,comment = FALSE)
+```
+
+## Comparing the Coefficient Estimates for 5 regression models
+```{r xtable6, results="asis", echo = FALSE, warning = FALSE, comment = FALSE, message = FALSE}
+ols_co = OLS_summary$coefficients[-1,1]
+ridge_co = ridge_coefficients[-1]
+lasso_co = lasso_coefficients[-1]
+house = cbind(ols_co,ridge_co, lasso_co,pcr_coef,plsr_coef)
+colnames(house) = c("ols", "ridge","lasso","pcr","plsr")
+aa = xtable(house, caption = "coefficients estiamtes for 5 regression models", digits = c(0,3,3,3,3,3))
+print(aa, comment = FALSE)
+```
+
+From the coefficient comparison table, we could find that all of five models agree on Income, Limit and Rating are significant predictors of the Balance. Four of the model agrees on the categorical variable 'Student' being a significant predictor, while PCR method excludes it.
+Among five models, lasso uses fewest predictors, and OLS uses the most. 
+
+## Comparing the MSE of 5 regression Models
+
+```{r xtable7, results="asis", echo = FALSE, warning = FALSE, comment = FALSE, message = FALSE}
+house2 = cbind(ols_MSE, ridge_test_mse,lasso_mse,pcr_mse,plsr_mse)
+row.names(house2) = "MSE"
+colnames(house2) = c("ols", "ridge","lasso","pcr","plsr")
+bb = xtable(house2, caption = "MSE estiamtes for 5 regression models", digits = c(0,3,3,3,3,3))
+print(bb, comment = FALSE)
+```
+
+According to the five model's mean square error, PCR model has the lowest MSE ,`pcr_mse`, showing it is a more precise predictive model. The other four models has similar MSE, around `ols_MSE`. Since `pcr_mse` is not much different from `ols_MSE`, we regard all five models are equally well-performing models, from which we tend to pick the ones with the fewest predictors. Lasso regression models use comparatively less predictors than other models, so we think it is the best fit model for this problem.
+

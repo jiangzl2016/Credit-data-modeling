@@ -1,0 +1,7 @@
+Code
+
+This repository holds all the code required to generate regression analysis for this project. 
+
+The scripts folder contains R code for exploratory data analysis (EDA), four regresssion models: ridge, lasso, PCR and PLSE; and code that produces session info. 
+
+The funcitons and tests folder contains functions used in regression modeling and their relative test functions.
